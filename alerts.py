@@ -13,12 +13,9 @@ def preparealertmsg(data):
 	return alert_msg
 
 def send_alert(alert_data):
-    alert_msg = preparealertmsg(alert_data)
-    for cid in conf['alertchatid']:
-	    print(conf['alertchatid'][cid])
-	    msg_data = {
-	        "chat_id": conf['alertchatid'][cid],
-		    "text": alert_msg
-	    }
-	    send_message(msg_data)
-    return
+	alert_msg = preparealertmsg(alert_data)
+	msg_data = {
+		"chat_id": conf['alertchatid'],
+		"text": alert_msg
+	}
+	send_message(msg_data)

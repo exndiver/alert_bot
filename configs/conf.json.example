@@ -1,0 +1,6 @@
+{
+	"port": 1111,
+	"alertchatid":"12345"
+	"token": "xxxx",
+	"secret":"yyyy"
+}
