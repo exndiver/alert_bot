@@ -9,7 +9,7 @@ def checkreg(data):
 	return 0
 
 def regrequest(data):
-	with open('regreq.json') as json_data_file:
+	with open('configs/regreq.json') as json_data_file:
 		regs = json.load(json_data_file)
 	json_data_file.close()
 	for req in regs:
@@ -22,7 +22,7 @@ def regrequest(data):
 		"chat_id": data["message"]["chat"]["id"],
 		"name": data["message"]["chat"]["first_name"]+" "+data["message"]["chat"]["last_name"]
 	})
-	with open('regreq.json', 'w') as outfile:
+	with open('configs/regreq.json', 'w') as outfile:
 		json.dump(regs, outfile)
 	outfile.close()
 	msg=prepare_msg(data,"Now you have to wait for review. It will be done manually")
