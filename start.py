@@ -11,7 +11,7 @@ from bot import *
 @post('/')
 def bot_in():
 	data = request.json
-	print(data)
+	log_message(data)
 	if not check_is_command(data):
 		msg=prepare_msg(data,"Hello! Anything I can help? (Need a command)")
 		send_message(msg)
