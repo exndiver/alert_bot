@@ -1,0 +1,11 @@
+{
+    "reg_succsess": "Now you have to wait for review. It will be done manually",
+    "help_text_command": "List of comands:\n    1. /subscribe - subscribe to channel!\n    2. /mysubscriptions - List of yours active subscribtions \n    3. /unsubscribe <subscription> - remove your subscription",
+    "unknown_command":"Sorry, I don't know this command :( Try /help!",
+    "unauth_reg_required_message":"I don't know hwo you are! Please make a register request /regme",
+    "already_registred_when_try_reg":"You already registred!",
+    "not_a_command":"Hello! Anything I can help? (Need a command, for example: /help)",
+    "already_subscribed": "You already subscribed to this channel",
+    "unknown_channel": "You have entred unknown channel. Please try again (to display the list of channels enter /subscribe)",
+    "subscribe_success":"You have sucsessfully subscribed"
+}

@@ -3,8 +3,18 @@ import json
 with open('configs/conf.json') as json_data_file:
     conf = json.load(json_data_file)
 json_data_file.close()
+
+with open('configs/strings.json') as json_data_file:
+    strings = json.load(json_data_file)
+json_data_file.close()
+
 bot_api="https://api.telegram.org/bot"+conf['token']+"/"
 
+def get_data(filename):
+    with open('data/'+filename+'.json', 'r') as json_data_file:
+        filedata = json.load(json_data_file)
+    json_data_file.close()
+    return filedata
 
 def log_message(msg):
     print("-------------------------------")

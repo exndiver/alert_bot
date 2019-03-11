@@ -12,11 +12,8 @@ from bot import *
 def bot_in():
 	data = request.json
 	log_message(data)
-	if not check_is_command(data):
-		msg=prepare_msg(data,"Hello! Anything I can help? (Need a command)")
-		send_message(msg)
-		return
-	execute_command(data)
+	if 'message' in data: direct_message(data)
+	elif 'channel_post' in data: log_message("It is a group chat. Teach me ho to work eith groups!!!")
 	return
 
 

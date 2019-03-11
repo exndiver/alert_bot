@@ -14,9 +14,7 @@ def preparealertmsg(data):
 
 def send_alert(alert_data):
 	alert_msg = preparealertmsg(alert_data)
-	with open('configs/regs.json') as json_data_file:
-		regs = json.load(json_data_file)
-	json_data_file.close()
+	regs=get_data("subscriptions")
 	if regs is None: return
 	for user in regs:
 		msg_data = {
