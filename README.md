@@ -2,8 +2,7 @@
 
 **Configs:**
 1. conf.json - main config. Structure is in an example file
-2. regreq.json - List of registration requests. Format - json array (empty config - ``[]``)
-3. regs.jsin - List of registred users. Format - json array (empty config - ``[]``)
+2. regs.jsin - List of registred users. Format - json array (empty config - ``[]``)
 
 **Example request:** 
 
