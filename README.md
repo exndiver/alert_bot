@@ -2,7 +2,10 @@
 
 **Configs:**
 1. conf.json - main config. Structure is in an example file
-2. regs.jsin - List of registred users. Format - json array (empty config - ``[]``)
+2. strings.json - list of strings for users messages
+**Data**
+1. regs.json - List of registred users. Format - json array (empty config - ``[]``)
+2. subscriptions.json - list of active channels. Structure in example file
 
 **Example request:** 
 
