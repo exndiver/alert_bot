@@ -49,9 +49,7 @@ def subscribe_command(data):
     elif data["message"]["text"].split(" ")[1] in listofsubscriptions:
         if str(data['message']['chat']['id']) not in listofsubscriptions[data["message"]["text"].split(" ")[1]]["list"].split(","):
             listofsubscriptions[data["message"]["text"].split(" ")[1]]["list"]+=str(data['message']['chat']['id'])+","
-            with open('data/subscriptions.json', 'w') as json_data_file:
-                json.dump(listofsubscriptions, json_data_file)
-            json_data_file.close()
+            write_data("subscriptions",listofsubscriptions)
             send_message(prepare_msg(data, strings['subscribe_success']))
         else:
             send_message(prepare_msg(data, strings["already_subscribed"]))
@@ -75,6 +73,21 @@ def list_subscriptions(data):
 
 def unsubscribe_command(data):
     log_message("Unsubscribe started")
+    if len(data["message"]["text"].split(" "))==1:
+        send_message(prepare_msg(data,strings["empty_unsub_channel"]))
+        log_message("User did not enter channel")
+        return
+    loc=get_data("subscriptions")
+    if data["message"]["text"].split(" ")[1] not in loc:
+        send_message(prepare_msg(data,strings["unknown_channel"]))
+        log_message("User entered unknown channel")
+        return
+    if str(data['message']['chat']['id']) in loc[data["message"]["text"].split(" ")[1]]["list"].split(","):
+        loc[data["message"]["text"].split(" ")[1]]["list"]=loc[data["message"]["text"].split(" ")[1]]["list"].replace(str(data['message']['chat']['id'])+",","")
+        write_data("subscriptions",loc)
+        send_message(prepare_msg(data,strings["successful_unsubscribe"]))
+    else:
+        send_message(prepare_msg(data,strings["no_subscription_unsubsribe"]))
 
 def execute_command(data):
     if check_permissions(data):

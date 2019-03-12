@@ -16,6 +16,11 @@ def get_data(filename):
     json_data_file.close()
     return filedata
 
+def write_data(filename,data):
+    with open('data/'+filename+'.json', 'w') as json_data_file:
+        json.dump(data, json_data_file)
+    json_data_file.close()
+
 def log_message(msg):
     print("-------------------------------")
     print(msg)

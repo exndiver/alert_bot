@@ -1,14 +1,43 @@
 import json
 import requests
-from bottle import run, post, route, template, request, response
+from bottle import Bottle, run, post, route, template, request, response
+import logging
+from functools import wraps
+from datetime import datetime
 
 from bot_msg import *
 from bot_com import *
 from alerts import *
 from bot import *
 
+logger = logging.getLogger('aller_bot')
 
-@post('/')
+logger.setLevel(logging.INFO)
+file_handler = logging.FileHandler('logs/alerts_bot.log', mode='a')
+formatter = logging.Formatter('%(msg)s')
+file_handler.setLevel(logging.DEBUG)
+file_handler.setFormatter(formatter)
+logger.addHandler(file_handler)
+
+def log_to_logger(fn):
+    @wraps(fn)
+    def _log_to_logger(*args, **kwargs):
+        print("logged")
+        request_time = datetime.now()
+        actual_response = fn(*args, **kwargs)
+        logger.info('%s %s %s %s %s - %s' % (request_time,
+										request.remote_addr,
+                                        request.method,
+                                        request.url,
+                                        response.status,
+										dict(request.headers)))
+        return actual_response
+    return _log_to_logger
+
+app = Bottle()
+app.install(log_to_logger)
+
+@app.post('/')
 def bot_in():
 	data = request.json
 	log_message(data)
@@ -16,8 +45,7 @@ def bot_in():
 	elif 'channel_post' in data: log_message("It is a group chat. Teach me ho to work eith groups!!!")
 	return
 
-
-@post('/SendAlert')
+@app.post('/SendAlert')
 def bot_alert():
 	alert_data = request.json
 	if alert_data is None:
@@ -33,9 +61,9 @@ def bot_alert():
 	return
 
 
-@route('/')
+@app.route('/')
 def index():
-    return '<b>Hello!</b>!'
+	return '<b>Hello!</b>!'
 
 if __name__ == '__main__':
-    run(host='localhost', port=conf['port'], debug=True)
+    app.run(host='localhost', port=conf['port'], debug=False)
