@@ -25,14 +25,32 @@ def log_to_logger(fn):
         print("logged")
         request_time = datetime.now()
         actual_response = fn(*args, **kwargs)
-        logger.info('%s %s %s %s %s - %s' % (request_time,
+        logger.info('%s %s %s %s %s - %s ---- %s' % (request_time,
 										request.remote_addr,
                                         request.method,
                                         request.url,
                                         response.status,
-										dict(request.headers)))
+										dict(request.headers),
+					dict(request.body)))
         return actual_response
     return _log_to_logger
+
+def graf_decor_data(odata,data):
+	title="ALERT!"
+	if 'title' in odata: title = odata["title"]
+	title_decore_begin="**"
+	title_decore_end="**"
+	if '[Alerting]' in title:
+		title_decore_begin="\U0000274C **"
+		title_decore_end="** \U0000274C"
+	if '[OK]' in title:
+		title_decore_begin="\U00002705 **"
+		title_decore_end="** \U00002705"
+	if '[No Data]' in title:
+		title_decore_begin="\U00002753 **"
+		title_decore_end="** \U00002753"
+	message=data['msg']		 
+	return "%s%s%s\n%s" % (title_decore_begin,title,title_decore_end,message)
 
 app = Bottle()
 app.install(log_to_logger)
@@ -51,6 +69,12 @@ def bot_alert():
 	if alert_data is None:
 		response.status = 403
 		return
+	log_message(alert_data)
+	#For
+	if 'message' in alert_data:
+		original_data=alert_data
+		alert_data=json.loads(alert_data['message'])
+		alert_data['msg']=graf_decor_data(original_data,alert_data)
 	if 'secret' not in alert_data:
 		response.status = 403
 		return

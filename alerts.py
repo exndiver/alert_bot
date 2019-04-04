@@ -12,16 +12,25 @@ def preparealertmsg(data):
 		alert_msg=data['msg']
 	return alert_msg
 
+def get_alert_list(channel):
+	subs=get_data("subscriptions")
+	if channel not in subs: return subs["default"]["list"]
+	else: return subs[channel]["list"]
+
 def send_alert(alert_data):
 	alert_msg = preparealertmsg(alert_data)
-	regs=get_data("subscriptions")
-	if regs is None: return
-	for user in regs:
+	if 'channel' not in alert_data: regs=get_alert_list("default")
+	else: regs=get_alert_list(alert_data["channel"])
+	if regs =="": return
+	for user in regs.split(","):
+		if user=="": continue
 		msg_data = {
-			"chat_id": user['chat_id'],
-			"text": alert_msg
+			"chat_id": int(user),
+			"text": alert_msg,
+			"parse_mode": "Markdown"
 		}
 		send_message(msg_data)
+
 
 def send_alert_admin(alert_data):
 	alert_msg = alert_data
